@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny Javiya | Computer Class Tutor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --accent-color: #00ff00;
+            --secondary-accent: #0088ff;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .terminal {
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 6px;
+            box-shadow: 0 4px 30px rgba(0, 255, 0, 0.1);
+        }
+        
+        .terminal-header {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .terminal-close { background-color: #ff5f56; }
+        .terminal-minimize { background-color: #ffbd2e; }
+        .terminal-maximize { background-color: #27c93f; }
+        
+        .terminal-body {
+            padding: 16px;
+            overflow: hidden;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: var(--accent-color);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--accent-color);
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-color) }
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .skill-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #333;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        .project-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-container {
+            position: relative;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: #333;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-container::before {
+                left: 20px;
+            }
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-content {
+            position: relative;
+            width: calc(50% - 30px);
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-content {
+                width: calc(100% - 50px);
+                margin-left: 50px;
+            }
+        }
+        
+        .timeline-content:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.1);
+        }
+        
+        .timeline-left {
+            left: 0;
+        }
+        
+        .timeline-right {
+            left: 50%;
+            margin-left: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-left, .timeline-right {
+                left: 0;
+                margin-left: 0;
+            }
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            top: 20px;
+            left: 50%;
+            margin-left: -8px;
+            z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+        
+        .contact-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-input:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(0, 255, 0, 0.1);
+            outline: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #000;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            background-color: #00cc00;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        .skill-bar-container {
+            height: 6px;
+            background-color: #333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .skill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-accent));
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .skill-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: skill-shine 2s infinite;
+        }
+        
+        @keyframes skill-shine {
+            0% { left: -30px; }
+            100% { left: 100%; }
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .matrix-column {
+            position: absolute;
+            top: -100px;
+            color: rgba(0, 255, 0, 0.1);
+            font-family: 'Fira Code', monospace;
+            font-size: 1.2rem;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-blur-md py-4">
+        <div class="container mx-auto px-4 md:px-8 flex justify-between items-center">
+            <div class="text-2xl font-bold code-font">
+                <span class="text-[var(--accent-color)]">&lt;</span>
+                Sunny Javiya
+                <span class="text-[var(--accent-color)]">/&gt;</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link code-font">Home</a>
+                <a href="#about" class="nav-link code-font">About</a>
+                <a href="#skills" class="nav-link code-font">Skills</a>
+                <a href="#experience" class="nav-link code-font">Experience</a>
+                <a href="#projects" class="nav-link code-font">Projects</a>
+                <a href="#contact" class="nav-link code-font">Contact</a>
+            </div>
+            <button class="md:hidden focus:outline-none" id="menuBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-black bg-opacity-95 w-full absolute top-16 left-0 py-4 px-4" id="mobileMenu">
+            <div class="flex flex-col space-y-4">
+                <a href="#home" class="py-2 px-4 hover:bg-zinc-900 rounded code-font">Home</a>
+                <a href="#about" class="py-2 px-4 hover:bg-zinc-900 rounded code-font">About</a>
+                <a href="#skills" class="py-2 px-4 hover:bg-zinc-900 rounded code-font">Skills</a>
+                <a href="#experience" class="py-2 px-4 hover:bg-zinc-900 rounded code-font">Experience</a>
+                <a href="#projects" class="py-2 px-4 hover:bg-zinc-900 rounded code-font">Projects</a>
+                <a href="#contact" class="py-2 px-4 hover:bg-zinc-900 rounded code-font">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20">
+        <div class="container mx-auto px-4 md:px-8 z-10">
+            <div class="terminal max-w-4xl mx-auto">
+                <div class="terminal-header">
+                    <div class="terminal-btn terminal-close"></div>
+                    <div class="terminal-btn terminal-minimize"></div>
+                    <div class="terminal-btn terminal-maximize"></div>
+                    <div class="ml-4 text-gray-400 text-sm code-font">sunny@javiya:~/portfolio</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="code-font text-gray-400 mb-2">$ whoami</div>
+                    <div class="text-4xl md:text-6xl font-bold mb-4 code-font">
+                        <span class="text-white">I'm </span>
+                        <span class="text-[var(--accent-color)]">Sunny Javiya</span>
+                    </div>
+                    <div class="code-font text-gray-400 mb-2">$ cat profession.txt</div>
+                    <div class="text-xl md:text-2xl mb-6 code-font typing">Computer Tutor & Content Writer & Web developer</div>
+                    <div class="code-font text-gray-400 mb-2">$ ls skills/</div>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">CCC</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">C</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">C++</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Python</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Web Design</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Photoshop</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">CorelDraw</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Ethical Hacking</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Networking</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Advanced Excel</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Wordpress</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">SQL</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Windows server</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Linux</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">Jquery</span>
+                        <span class="px-3 py-1 bg-zinc-900 rounded-full text-sm border border-[var(--accent-color)] text-[var(--accent-color)]">PHP</span>
+                    </div>
+                    <div class="code-font text-gray-400 mb-2">$ ./get_started.sh</div>
+                    <div class="flex space-x-4">
+                        <a href="#about" class="btn-primary px-6 py-3 rounded-md font-medium code-font">Learn More</a>
+                        <a href="#contact" class="px-6 py-3 rounded-md font-medium border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:bg-opacity-10 transition code-font">Contact Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-zinc-900">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center code-font">
+                <span class="text-[var(--accent-color)]">&lt;</span>
+                About Me
+                <span class="text-[var(--accent-color)]">/&gt;</span>
+            </h2>
+            <p class="text-gray-400 mb-12 text-center code-font">/* Who I am and what I do */</p>
+            
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-btn terminal-close"></div>
+                            <div class="terminal-btn terminal-minimize"></div>
+                            <div class="terminal-btn terminal-maximize"></div>
+                            <div class="ml-4 text-gray-400 text-sm code-font">about.js</div>
+                        </div>
+                        <div class="terminal-body">
+                            <pre class="code-font text-sm"><span class="text-blue-400">const</span> <span class="text-[var(--accent-color)]">aboutMe</span> = {
+  <span class="text-yellow-400">name</span>: <span class="text-orange-400">'Sunny Javiya'</span>,
+  <span class="text-yellow-400">role</span>: <span class="text-orange-400">'Computer Class Tutor'</span>,
+  <span class="text-yellow-400">education</span>: <span class="text-orange-400">'Bachelor of Computer Applications (BCA)'</span>,
+  <span class="text-yellow-400">experience</span>: [
+    {
+      <span class="text-yellow-400">position</span>: <span class="text-orange-400">'Computer Class Tutor'</span>,
+      <span class="text-yellow-400">duration</span>: <span class="text-orange-400">'2 years'</span>
+    },
+    {
+      <span class="text-yellow-400">position</span>: <span class="text-orange-400">'Content Writer'</span>,
+      <span class="text-yellow-400">duration</span>: <span class="text-orange-400">'1 year'</span>
+    }
+  ],
+  <span class="text-yellow-400">interests</span>: [
+    <span class="text-orange-400">'Programming'</span>,
+    <span class="text-orange-400">'Ethical Hacking'</span>,
+    <span class="text-orange-400">'AI Development'</span>,
+    <span class="text-orange-400">'Teaching'</span>
+  ]
+};</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <h3 class="text-2xl font-bold mb-4">Hello, I'm Sunny Javiya</h3>
+                    <p class="text-gray-300 mb-4">
+                        I'm a passionate Computer Class Tutor with expertise in various programming languages and technical skills. With a Bachelor's degree in Computer Applications (BCA), I specialize in teaching programming, web design, and various computer applications.
+                    </p>
+                    <p class="text-gray-300 mb-6">
+                        My experience includes 2 years as a Computer Tutor where I've helped students master programming concepts, and 1 year as a Content Writer creating technical documentation and educational materials. I'm particularly interested in AI development, which was the focus of my BCA project.
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+            <!-- Experience -->
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                <!-- Briefcase Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2" />
+                </svg>
+                </div>
+                <div>
+                <div class="text-sm text-gray-500">Experience</div>
+                <div class="font-semibold">3 Years</div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center mr-3">
+                <!-- Graduation Cap Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6 3-6 3-6-3 6-3z" />
+                </svg>
+                </div>
+                <div>
+                <div class="text-sm text-gray-500">Education</div>
+                <div class="font-semibold">BCA Graduate</div>
+                </div>
+            </div>
+
+            <!-- Project Focus -->
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center mr-3">
+                <!-- AI / Lightbulb Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a7 7 0 00-7 7c0 2.5 1.5 4.7 3 6v2a2 2 0 002 2h2a2 2 0 002-2v-2c1.5-1.3 3-3.5 3-6a7 7 0 00-7-7z" />
+                </svg>
+                </div>
+                <div>
+                <div class="text-sm text-gray-500">Project Focus</div>
+                <div class="font-semibold">Artificial Intelligence</div>
+                </div>
+            </div>
+            </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-black">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center code-font">
+                <span class="text-[var(--accent-color)]">&lt;</span>
+                Skills & Expertise
+                <span class="text-[var(--accent-color)]">/&gt;</span>
+            </h2>
+            <p class="text-gray-400 mb-12 text-center code-font">/* What I know and can do */</p>
+            
+            <div class="terminal max-w-4xl mx-auto mb-12">
+                <div class="terminal-header">
+                    <div class="terminal-btn terminal-close"></div>
+                    <div class="terminal-btn terminal-minimize"></div>
+                    <div class="terminal-btn terminal-maximize"></div>
+                    <div class="ml-4 text-gray-400 text-sm code-font">skills.sh</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="code-font text-gray-400 mb-4">$ ./analyze_skills.sh</div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="code-font">Programming Languages</span>
+                                <span class="code-font text-[var(--accent-color)]">90%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" style="width: 90%"></div>
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">C</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">C++</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Python</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">CCC</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="code-font">Design & Creative</span>
+                                <span class="code-font text-[var(--accent-color)]">85%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Web Design</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Photoshop</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">CorelDraw</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="code-font">Security & Networking</span>
+                                <span class="code-font text-[var(--accent-color)]">80%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Ethical Hacking</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Networking</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="code-font">Office Applications</span>
+                                <span class="code-font text-[var(--accent-color)]">95%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" style="width: 95%"></div>
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Advanced Excel</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Office Suite</span>
+                            </div>
+                        </div>
+
+                         <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="code-font">Data Base</span>
+                                <span class="code-font text-[var(--accent-color)]">75%</span>
+                            </div>
+                            <div class="skill-bar-container">
+                                <div class="skill-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">My SQL</span>
+                                <span class="px-2 py-1 bg-zinc-900 rounded text-xs">Mongodb</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-font text-gray-400 mt-6">$ echo "Skills analysis complete."</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">C</div>
+                    <div class="text-sm">Programming</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">C++</div>
+                    <div class="text-sm">Programming</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">Python</div>
+                    <div class="text-sm">Programming</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">Web</div>
+                    <div class="text-sm">Design</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">PS</div>
+                    <div class="text-sm">Photoshop</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">CD</div>
+                    <div class="text-sm">CorelDraw</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">EH</div>
+                    <div class="text-sm">Ethical Hacking</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">Net</div>
+                    <div class="text-sm">Networking</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">XL</div>
+                    <div class="text-sm">Advanced Excel</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">CCC</div>
+                    <div class="text-sm">Certification</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">My SQL</div>
+                    <div class="text-sm">Data Base</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">WS</div>
+                    <div class="text-sm">Windows Server</div>
+                </div>
+                <div class="skill-item bg-zinc-900 p-4 rounded-lg text-center">
+                    <div class="text-[var(--accent-color)] text-3xl mb-2">Linux</div>
+                    <div class="text-sm">Operating System</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-zinc-900">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center code-font">
+                <span class="text-[var(--accent-color)]">&lt;</span>
+                Experience & Education
+                <span class="text-[var(--accent-color)]">/&gt;</span>
+            </h2>
+            <p class="text-gray-400 mb-12 text-center code-font">/* My professional journey */</p>
+            
+            <div class="timeline-container max-w-4xl mx-auto">
+                <!-- Experience Item 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content timeline-right">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold">Computer Class Tutor</h3>
+                            <span class="text-[var(--accent-color)] code-font">2 Years</span>
+                        </div>
+                        <p class="text-gray-400 mb-2">Teaching programming languages, web design, and computer applications to students.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Programming</span>
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Web Design</span>
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Computer Applications</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Experience Item 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content timeline-left">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold">Content Writer</h3>
+                            <span class="text-[var(--accent-color)] code-font">1 Year</span>
+                        </div>
+                        <p class="text-gray-400 mb-2">Creating technical documentation, tutorials, and educational content.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Technical Writing</span>
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Documentation</span>
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Educational Content</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content timeline-right">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xl font-bold">Bachelor of Computer Applications (BCA)</h3>
+                            <span class="text-[var(--accent-color)] code-font">Graduate</span>
+                        </div>
+                        <p class="text-gray-400 mb-2">Completed BCA with focus on programming, web development, and computer applications.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Computer Science</span>
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Programming</span>
+                            <span class="px-2 py-1 bg-zinc-800 rounded text-xs">AI Project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-black">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center code-font">
+                <span class="text-[var(--accent-color)]">&lt;</span>
+                Projects
+                <span class="text-[var(--accent-color)]">/&gt;</span>
+            </h2>
+            <p class="text-gray-400 mb-12 text-center code-font">/* What I've built */</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card bg-zinc-900 rounded-lg overflow-hidden">
+                    <div class="h-60 bg-zinc-800 relative">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-6xl text-[var(--accent-color)] opacity-30"><img src="Ai.jpg"></div>
+                        </div>
+                        <div class="absolute inset-0 project-overlay flex items-center justify-center">
+                            <a href="#" class="px-4 py-2 bg-[var(--accent-color)] text-black rounded-md font-medium">View Details</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Artificial Intelligence Project</h3>
+                        <p class="text-gray-400 mb-4">BCA final project focused on developing an AI application with practical applications.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-2">
+                                <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Python</span>
+                                <span class="px-2 py-1 bg-zinc-800 rounded text-xs">AI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card bg-zinc-900 rounded-lg overflow-hidden">
+                    <div class="h-60 bg-zinc-800 relative">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-6xl text-[var(--accent-color)] opacity-30"><img src="Web.jpg"></div>
+                        </div>
+                        <div class="absolute inset-0 project-overlay flex items-center justify-center">
+                            <a href="#" class="px-4 py-2 bg-[var(--accent-color)] text-black rounded-md font-medium">View Details</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Educational Web Platform</h3>
+                        <p class="text-gray-400 mb-4">A web platform designed for teaching programming concepts to beginners.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-2">
+                                <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Web Design</span>
+                                <span class="px-2 py-1 bg-zinc-800 rounded text-xs">HTML/CSS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card bg-zinc-900 rounded-lg overflow-hidden">
+                    <div class="h-60 bg-zinc-800 relative">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-6xl text-[var(--accent-color)] opacity-30"><img src="Sec.jpg"></div>
+                        </div>
+                        <div class="absolute inset-0 project-overlay flex items-center justify-center">
+                            <a href="#" class="px-4 py-2 bg-[var(--accent-color)] text-black rounded-md font-medium">View Details</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Network Security Demo</h3>
+                        <p class="text-gray-400 mb-4">Educational demonstration of network security principles and ethical hacking techniques.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-2">
+                                <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Ethical Hacking</span>
+                                <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Networking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-zinc-900">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center code-font">
+                <span class="text-[var(--accent-color)]">&lt;</span>
+                Contact Me
+                <span class="text-[var(--accent-color)]">/&gt;</span>
+            </h2>
+            <p class="text-gray-400 mb-12 text-center code-font">/* Let's work together */</p>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn terminal-close"></div>
+                        <div class="terminal-btn terminal-minimize"></div>
+                        <div class="terminal-btn terminal-maximize"></div>
+                        <div class="ml-4 text-gray-400 text-sm code-font">contact.sh</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="code-font text-gray-400 mb-4">$ ./send_message.sh</div>
+                        
+                        <form id="contactForm" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block mb-2 text-sm code-font">Name:</label>
+                                    <input type="text" id="name" class="contact-input w-full px-4 py-3 rounded-md code-font" required>
+                                </div>
+                                <div>
+                                    <label for="email" class="block mb-2 text-sm code-font">Email:</label>
+                                    <input type="email" id="email" class="contact-input w-full px-4 py-3 rounded-md code-font" required>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="subject" class="block mb-2 text-sm code-font">Subject:</label>
+                                <input type="text" id="subject" class="contact-input w-full px-4 py-3 rounded-md code-font" required>
+                            </div>
+                            
+                            <div>
+                                <label for="message" class="block mb-2 text-sm code-font">Message:</label>
+                                <textarea id="message" rows="5" class="contact-input w-full px-4 py-3 rounded-md code-font" required></textarea>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn-primary px-8 py-3 rounded-md font-medium code-font">Send Message</button>
+                            </div>
+                        </form>
+                        
+                        <div class="code-font text-gray-400 mt-6">$ echo "I'll get back to you soon!"</div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <a href="mailto:contact@sunnyjaviya.com" class="flex items-center space-x-2 hover:text-[var(--accent-color)] transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span class="code-font">sunnyjaviya4@gmail.com</span>
+                    </a>
+                    <a href="tel:+1234567890" class="flex items-center space-x-2 hover:text-[var(--accent-color)] transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        <span class="code-font">+91 6351791895</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 hover:text-[var(--accent-color)] transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="code-font">Surat, Gujarat</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-black border-t border-zinc-800">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="text-2xl font-bold code-font">
+                        <span class="text-[var(--accent-color)]">&lt;</span>
+                        Sunny Javiya
+                        <span class="text-[var(--accent-color)]">/&gt;</span>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-6 mb-4 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-[var(--accent-color)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-[var(--accent-color)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-red-600 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.498 6.186a2.987 2.987 0 00-2.103-2.103C19.88 3.5 12 3.5 12 3.5s-7.88 0-9.395.583A2.987 2.987 0 00.502 6.186 31.181 31.181 0 000 12a31.18 31.18 0 00.502 5.814 2.987 2.987 0 002.103 2.103C4.12 20.5 12 20.5 12 20.5s7.88 0 9.395-.583a2.987 2.987 0 002.103-2.103A31.18 31.18 0 0024 12a31.181 31.181 0 00-.502-5.814zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+                        </svg>
+                        </a>
+
+                </div>
+                
+                <div class="text-sm text-gray-400 code-font">
+                    &copy; <span id="current-year">2023</span> Sunny Javiya. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Contact form submission
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Demo form submission - in a real scenario, you would send this data to a server
+            alert(`Thank you for your message, ${name}! I'll get back to you soon.`);
+            contactForm.reset();
+        });
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Matrix background effect
+        function createMatrixBackground() {
+            const matrixBg = document.getElementById('matrix-bg');
+            const width = window.innerWidth;
+            const columns = Math.floor(width / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = i * 20 + 'px';
+                column.style.animationDuration = Math.random() * 5 + 3 + 's';
+                column.textContent = generateRandomChars();
+                matrixBg.appendChild(column);
+            }
+        }
+        
+        function generateRandomChars() {
+            let result = '';
+            const chars = '01';
+            const length = Math.floor(Math.random() * 20) + 10;
+            
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            return result;
+        }
+        
+        // Initialize matrix background
+        createMatrixBackground();
+        
+        // Refresh matrix characters periodically
+        setInterval(() => {
+            document.querySelectorAll('.matrix-column').forEach(column => {
+                column.textContent = generateRandomChars();
+            });
+        }, 5000);
+        
+        // Adjust matrix columns on window resize
+        window.addEventListener('resize', () => {
+            const matrixBg = document.getElementById('matrix-bg');
+            matrixBg.innerHTML = '';
+            createMatrixBackground();
+        });
+    </script>
+</body>
+</html>
